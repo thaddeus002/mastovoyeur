@@ -27,6 +27,34 @@
 
 
     /**
+     * Create a html list of the attached files, with links to them.
+     * @param attachments a list of objects
+     * @return the new html element 
+     */
+    function createAttachmentsList(attachments) {
+		var list = document.createElement('ul');
+        var i;
+
+        for(i=0; i<attachments.length; i++) {
+
+            var item = document.createElement('li');
+            var link = document.createElement('a');
+
+            link.setAttribute('href', attachments[i].url);
+            link.textContent = attachments[i].type;
+            if(attachments[i].description != null) {
+                link.setAttribute('alt', attachments[i].description);
+		    }
+            item.appendChild(link);
+
+            list.appendChild(item);
+		}
+
+		return list;
+	}
+
+
+    /**
      * Appends a status in the table.
      * @param status the status to show
      */
@@ -42,12 +70,22 @@
         tr.children[1].appendChild(avatar);
         var br = document.createElement('br');
         tr.children[1].appendChild(br);
-        tr.children[1].append(status.account.display_name);
-        
-        tr.children[2].appendChild(createElementFromHTML(status.content));
+        var name = status.account.display_name;
+        if(name.trim().length === 0) {
+			name = status.account.acct;
+		}
+        tr.children[1].append(name);
+
+        // an error can occur without this test
+        if(status.content.length > 0) {
+            tr.children[2].appendChild(createElementFromHTML(status.content));
+        }
+
+        tr.children[3].appendChild(createAttachmentsList(status.media_attachments));
 
         body.appendChild(tr);
     }
+
 
 
     /**
