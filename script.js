@@ -76,7 +76,10 @@
         if(name.trim().length === 0) {
             name = status.account.acct;
         }
-        tr.children[1].append(name);
+        var linkn = document.createElement('a');
+        linkn.setAttribute('href', status.account.url);
+        linkn.textContent=name;
+        tr.children[1].appendChild(linkn);
 
         // an error can occur without this test
         if(status.content.length > 0) {
