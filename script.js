@@ -6,10 +6,11 @@
 
     var input = document.getElementById("instance");
 
-    var title = document.getElementById("title");
-
     var body = document.getElementById("body");
     var ex = document.getElementById("model");
+
+    var rangeList= document.getElementById("range");
+    var range = rangeList.options[rangeList.selectedIndex].value;
 
     body.removeChild(ex);
 
@@ -97,12 +98,17 @@
             
         const req = new XMLHttpRequest();
 
+        var local="local=yes&";
+
         var instance_url = input.value;
         if(!instance_url) {
             instance_url = "https://framapiaf.org";
         }
 
-        req.open("GET", instance_url + "/api/v1/timelines/public?local=yes&limit=40", true);
+        if(range == "federated") {
+            local = "";
+        }
+        req.open("GET", instance_url + "/api/v1/timelines/public?"+local+"limit=40", true);
 
         req.onload = function() {
 

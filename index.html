@@ -7,8 +7,18 @@
     </head>
     <body>
 
-        <h1 id="title">Public local timeline of <input type="text" id="instance" placeholder="https://framapiaf.org" /></h1>
-        <button onclick="MASTO.getTimeline()">Load</button>
+        <section id="header">
+            <h1>
+                Public
+                <select id="range" name="nom" size="1">
+                    <option value="local">local</option>
+                    <option value="federated">federated</option>
+                </select>
+                timeline of
+                <input type="text" id="instance" placeholder="https://framapiaf.org" />
+            </h1>
+            <button onclick="MASTO.getTimeline()">Load</button>
+        </section>
         
         <section id="statuses">
             <table>
