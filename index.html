@@ -7,9 +7,9 @@
     </head>
     <body>
 
-        <h1 id="title">Public local timeline of </h1>
-
-
+        <h1 id="title">Public local timeline of <input type="text" id="instance" placeholder="https://framapiaf.org" /></h1>
+        <button onclick="MASTO.getTimeline()">Load</button>
+        
         <section id="statuses">
             <table>
                 <thead>
@@ -31,6 +31,7 @@
             </table>
         </section>
 
-    	<script src="script.js"></script>
+        <script src="script.js"></script>
+        
     </body>
 </html>

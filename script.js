@@ -1,8 +1,10 @@
-;(function() {
+;(function(root) {
 
     "use strict";
 
-    var instance_url = "https://framapiaf.org"
+    let MASTO = {};
+
+    var input = document.getElementById("instance");
 
     var title = document.getElementById("title");
 
@@ -11,7 +13,6 @@
 
     body.removeChild(ex);
 
-    title.textContent = title.textContent + instance_url;
 
 
     /**
@@ -32,7 +33,7 @@
      * @return the new html element 
      */
     function createAttachmentsList(attachments) {
-		var list = document.createElement('ul');
+        var list = document.createElement('ul');
         var i;
 
         for(i=0; i<attachments.length; i++) {
@@ -44,14 +45,14 @@
             link.textContent = attachments[i].type;
             if(attachments[i].description != null) {
                 link.setAttribute('alt', attachments[i].description);
-		    }
+            }
             item.appendChild(link);
 
             list.appendChild(item);
-		}
+        }
 
-		return list;
-	}
+        return list;
+    }
 
 
     /**
@@ -72,8 +73,8 @@
         tr.children[1].appendChild(br);
         var name = status.account.display_name;
         if(name.trim().length === 0) {
-			name = status.account.acct;
-		}
+            name = status.account.acct;
+        }
         tr.children[1].append(name);
 
         // an error can occur without this test
@@ -92,11 +93,16 @@
      * Get the public local timeline with instance API and fill the
      * table.
      */
-    function getTimeline() {
+    MASTO.getTimeline = function () {
             
         const req = new XMLHttpRequest();
 
-        req.open("GET", instance_url + "/api/v1/timelines/public?local=yes", true);
+        var instance_url = input.value;
+        if(!instance_url) {
+            instance_url = "https://framapiaf.org";
+        }
+
+        req.open("GET", instance_url + "/api/v1/timelines/public?local=yes&limit=40", true);
 
         req.onload = function() {
 
@@ -110,6 +116,5 @@
         req.send(null);
     }
 
-
-    getTimeline();  
-}());
+    root.MASTO = MASTO;
+}(this));
