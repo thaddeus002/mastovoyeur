@@ -57,6 +57,7 @@
             var link = document.createElement('a');
 
             link.setAttribute('href', attachments[i].url);
+            link.setAttribute('target', '_blank');
             link.textContent = attachments[i].type;
             if(attachments[i].description != null) {
                 link.setAttribute('alt', attachments[i].description);
