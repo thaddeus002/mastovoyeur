@@ -17,15 +17,29 @@
 
 
     /**
-     * Create an HTML element from a String.
-     * @param html a String representing a HTML element
-     * @return the corresponding element
+     * Create HTML elements from a String.
+     * @param html a String representing an or more HTML element
+     * @return the corresponding array of elements
      */
-    function createElementFromHTML(html) {
+    function createElementsFromHTML(html) {
         var template = document.createElement('template');
         template.innerHTML = html.trim();
-        return template.content.firstChild;
+        return template.content.children;
     }
+
+
+    /**
+     * Add children to an HTML element.
+     * @param parent the parent where add the children
+     * @param children an array of children to add
+     *
+     */
+    function addChildren(parent, children) {
+        for(var i=0; i<children.length; i++) {
+            parent.appendChild(children[i]);
+        }
+    }
+
 
 
     /**
@@ -83,7 +97,7 @@
 
         // an error can occur without this test
         if(status.content.length > 0) {
-            tr.children[2].appendChild(createElementFromHTML(status.content));
+            addChildren(tr.children[2], createElementsFromHTML(status.content));
         }
 
         tr.children[3].appendChild(createAttachmentsList(status.media_attachments));
