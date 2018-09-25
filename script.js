@@ -29,6 +29,16 @@
 
 
     /**
+     * Create a new HTML paragraph with a given text.
+     */
+    function createElementParagraph(text) {
+        var p = document.createElement('p');
+        p.textContent = text;
+        return p;
+    }
+
+
+    /**
      * Add children to an HTML element.
      * @param parent the parent where add the children
      * @param children an array of children to add
@@ -99,6 +109,9 @@
         // an error can occur without this test
         if(status.content.length > 0) {
             addChildren(tr.children[2], createElementsFromHTML(status.content));
+        }
+        if(status.in_reply_to_id != null) {
+            tr.children[2].appendChild(createElementParagraph("Follow discussion"));
         }
 
         tr.children[3].appendChild(createAttachmentsList(status.media_attachments));
