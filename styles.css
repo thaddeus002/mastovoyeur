@@ -16,3 +16,15 @@ table td,table th {
     min-height:30px;
     font-size:12px;
 }
+
+p.attachments_h {
+    font-weight: bold;
+}
+
+table.attachments_t td {
+    border: 0px;
+}
+
+table#statuses_t {
+    width: 100%
+}

@@ -51,19 +51,21 @@
     }
 
 
-
     /**
-     * Create a html list of the attached files, with links to them.
+     * Create a html table of the attached files, with links to them.
      * @param attachments a list of objects
      * @return the new html element 
      */
-    function createAttachmentsList(attachments) {
-        var list = document.createElement('ul');
+    function createAttachmentsTable(attachments) {
+        var table = document.createElement('table');
+        table.setAttribute("class", "attachments_t");
+        
         var i;
 
         for(i=0; i<attachments.length; i++) {
 
-            var item = document.createElement('li');
+            var tr = document.createElement('tr');
+            var item = document.createElement('td');
             var link = document.createElement('a');
 
             link.setAttribute('href', attachments[i].url);
@@ -74,10 +76,11 @@
             }
             item.appendChild(link);
 
-            list.appendChild(item);
+            tr.appendChild(item);
+            table.appendChild(tr);
         }
 
-        return list;
+        return table;
     }
 
 
@@ -88,7 +91,6 @@
     function showStatus(status) {
 
         var tr = ex.cloneNode(true);
-        console.log(tr.childNodes.length);
         tr.children[0].textContent = status.created_at;
 
         var avatar = document.createElement('img');
@@ -110,11 +112,24 @@
         if(status.content.length > 0) {
             addChildren(tr.children[2], createElementsFromHTML(status.content));
         }
+
         if(status.in_reply_to_id != null) {
             tr.children[2].appendChild(createElementParagraph("Follow discussion"));
         }
 
-        tr.children[3].appendChild(createAttachmentsList(status.media_attachments));
+
+        if(status.media_attachments.length > 0) {
+            var attach_st = status.media_attachments.length + " attachment";
+            if(status.media_attachments.length > 1) {
+                attach_st = attach_st + "s";
+            }
+
+            var p = createElementParagraph(attach_st);
+            p.setAttribute('class', "attachments_h");
+
+            tr.children[2].appendChild(p);
+            tr.children[2].appendChild(createAttachmentsTable(status.media_attachments));
+        }
 
         body.appendChild(tr);
     }
