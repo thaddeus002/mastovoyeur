@@ -70,7 +70,16 @@
 
             link.setAttribute('href', attachments[i].url);
             link.setAttribute('target', '_blank');
-            link.textContent = attachments[i].type;
+            if(attachments[i].type=="image") {
+                var img = document.createElement('img');
+                img.setAttribute('src', attachments[i].preview_url);
+                img.setAttribute('width', attachments[i].meta.small.width);
+                img.setAttribute('height', attachments[i].meta.small.height);
+                link.appendChild(img);
+            } else {
+                link.textContent = attachments[i].type;
+            }
+            
             if(attachments[i].description != null) {
                 link.setAttribute('alt', attachments[i].description);
             }
