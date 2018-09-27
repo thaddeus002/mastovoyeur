@@ -15,42 +15,6 @@
     body.removeChild(ex);
 
 
-
-    /**
-     * Create HTML elements from a String.
-     * @param html a String representing an or more HTML element
-     * @return the corresponding array of elements
-     */
-    function createElementsFromHTML(html) {
-        var template = document.createElement('template');
-        template.innerHTML = html.trim();
-        return template.content.children;
-    }
-
-
-    /**
-     * Create a new HTML paragraph with a given text.
-     */
-    function createElementParagraph(text) {
-        var p = document.createElement('p');
-        p.textContent = text;
-        return p;
-    }
-
-
-    /**
-     * Add children to an HTML element.
-     * @param parent the parent where add the children
-     * @param children an array of children to add
-     *
-     */
-    function addChildren(parent, children) {
-        for(var i=0; i<children.length; i++) {
-            parent.appendChild(children[i]);
-        }
-    }
-
-
     /**
      * Create a html table of the attached files, with links to them.
      * @param attachments a list of objects
@@ -94,6 +58,14 @@
 
 
     /**
+     * Remove all shown statuses from table.
+     */
+    function cleanStatuses() {
+        HTML.removeChildren(body);
+    }
+
+
+    /**
      * Appends a status in the table.
      * @param status the status to show
      */
@@ -119,11 +91,11 @@
 
         // an error can occur without this test
         if(status.content.length > 0) {
-            addChildren(tr.children[2], createElementsFromHTML(status.content));
+            HTML.addChildren(tr.children[2], HTML.createElementsFromHTML(status.content));
         }
 
         if(status.in_reply_to_id != null) {
-            tr.children[2].appendChild(createElementParagraph("Follow discussion"));
+            tr.children[2].appendChild(HTML.createElementParagraph("Follow discussion"));
         }
 
 
@@ -133,7 +105,7 @@
                 attach_st = attach_st + "s";
             }
 
-            var p = createElementParagraph(attach_st);
+            var p = HTML.createElementParagraph(attach_st);
             p.setAttribute('class', "attachments_h");
 
             tr.children[2].appendChild(p);
@@ -172,6 +144,7 @@
             }
 
             var statuses = JSON.parse(this.responseText);
+            cleanStatuses();
             statuses.forEach(showStatus);
         };
         req.send(null);
