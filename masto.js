@@ -12,6 +12,9 @@
     var rangeList= document.getElementById("range");
     var range = rangeList.options[rangeList.selectedIndex].value;
 
+    /** Id of the oldest loaded status */
+    var lastStatusId = 0;
+
     body.removeChild(ex);
 
 
@@ -62,6 +65,7 @@
      */
     function cleanStatuses() {
         HTML.removeChildren(body);
+        lastStatusId = 0;
     }
 
 
@@ -112,20 +116,21 @@
             tr.children[2].appendChild(createAttachmentsTable(status.media_attachments));
         }
 
+        lastStatusId = status.id;
         body.appendChild(tr);
     }
 
 
-
     /**
-     * Get the public local timeline with instance API and fill the
+     * Get the public timeline with instance API and fill the
      * table.
      */
-    MASTO.getTimeline = function () {
+    function getTimeline(id) {
             
         const req = new XMLHttpRequest();
 
         var local="local=yes&";
+        var maxid="";
 
         var instance_url = input.value;
         if(!instance_url) {
@@ -135,7 +140,12 @@
         if(range == "federated") {
             local = "";
         }
-        req.open("GET", instance_url + "/api/v1/timelines/public?"+local+"limit=40", true);
+
+        if(id!=0) {
+            maxid="&max_id="+id;
+        }
+        
+        req.open("GET", instance_url + "/api/v1/timelines/public?"+local+"limit=40"+maxid, true);
 
         req.onload = function() {
 
@@ -144,11 +154,28 @@
             }
 
             var statuses = JSON.parse(this.responseText);
-            cleanStatuses();
+            if(id == 0) {
+                cleanStatuses();
+            }
             statuses.forEach(showStatus);
         };
         req.send(null);
     }
+
+
+    /**
+     * Get the public timeline with instance API and fill the
+     * table, removing old stuff.
+     */
+    MASTO.refreshTimeline = function () {
+        getTimeline(0);
+    }
+
+
+    MASTO.loadMore = function() {
+        getTimeline(lastStatusId);
+    }
+
 
     root.MASTO = MASTO;
 }(this));
