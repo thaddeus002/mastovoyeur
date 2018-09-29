@@ -15,8 +15,8 @@
                     <option value="federated">federated</option>
                 </select>
                 timeline of
-                <input type="text" id="instance" placeholder="https://framapiaf.org" />
-                <button onclick="MASTO.refreshTimeline()">Load newest statuses</button>
+                <input type="text" id="instance" placeholder="https://mastodon.social" />
+                <button onclick="IHM.refreshTimeline()">Load newest statuses</button>
             </h1>
         </section>
         
@@ -37,11 +37,12 @@
                     </tr>
                 </tbody>
             </table>
-            <button onclick="MASTO.loadMore()">Load more</button>
+            <button onclick="IHM.loadMore()">Load more</button>
         </section>
 
         <script src="html.js"></script>
         <script src="masto.js"></script>
+        <script src="ihm.js"></script>
         
     </body>
 </html>
