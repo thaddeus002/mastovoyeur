@@ -12,9 +12,6 @@
     var body = document.getElementById("body");
     var ex = document.getElementById("model");
 
-    var rangeList= document.getElementById("range");
-    var range = rangeList.options[rangeList.selectedIndex].value;
-
     /** Id of the oldest loaded status */
     var lastStatusId = 0;
 
@@ -129,8 +126,6 @@
      * table.
      */
     function getTimeline(id) {
-            
-        var local="local";
 
         var instance_url = input.value;
         if(!instance_url) {
@@ -140,11 +135,10 @@
             instance_url = "https://mastodon.social";
         }
 
-        if(range == "federated") {
-            local = "";
-        }
+        var rangeList = document.getElementById("range");
+        var range = rangeList.options[rangeList.selectedIndex].value;
 
-        MASTO.getTimeline(instance_url, local, id, showStatus);
+        MASTO.getTimeline(instance_url, range, id, showStatus);
     }
 
 
