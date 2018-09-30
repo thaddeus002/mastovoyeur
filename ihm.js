@@ -21,9 +21,11 @@
     /**
      * Create a html table of the attached files, with links to them.
      * @param attachments a list of objects
+     * @param sensitive true if the status is sensitive. Then don't show
+     *        the images
      * @return the new html element 
      */
-    function createAttachmentsTable(attachments) {
+    function createAttachmentsTable(attachments, sensitive) {
         var table = document.createElement('table');
         table.setAttribute("class", "attachments_t");
         
@@ -37,14 +39,14 @@
 
             link.setAttribute('href', attachments[i].url);
             link.setAttribute('target', '_blank');
-            if(attachments[i].type=="image") {
+            if(attachments[i].type=="image" && !sensitive) {
                 var img = document.createElement('img');
                 img.setAttribute('src', attachments[i].preview_url);
                 img.setAttribute('width', attachments[i].meta.small.width);
                 img.setAttribute('height', attachments[i].meta.small.height);
                 link.appendChild(img);
             } else {
-                link.textContent = attachments[i].type;
+                link.textContent = attachments[i].type + " (sensitive)";
             }
             
             if(attachments[i].description != null) {
@@ -113,7 +115,7 @@
             p.setAttribute('class', "attachments_h");
 
             tr.children[2].appendChild(p);
-            tr.children[2].appendChild(createAttachmentsTable(status.media_attachments));
+            tr.children[2].appendChild(createAttachmentsTable(status.media_attachments, status.sensitive));
         }
 
         lastStatusId = status.id;
