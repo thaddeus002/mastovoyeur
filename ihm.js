@@ -46,7 +46,10 @@
                 img.setAttribute('height', attachments[i].meta.small.height);
                 link.appendChild(img);
             } else {
-                link.textContent = attachments[i].type + " (sensitive)";
+                link.textContent = attachments[i].type;
+                if(sensitive) {
+                    link.textContent = link.textContent + " (sensitive)";
+                }
             }
             
             if(attachments[i].description != null) {
