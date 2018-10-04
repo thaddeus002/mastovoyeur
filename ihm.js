@@ -15,6 +15,10 @@
     /** Id of the oldest loaded status */
     var lastStatusId = 0;
 
+    var discussion = document.getElementById("discussion");
+    var timeline = document.getElementById("statuses");
+    var dbody = document.getElementById("discussion_body");
+
     body.removeChild(ex);
 
 
@@ -104,7 +108,10 @@
         }
 
         if(status.in_reply_to_id != null) {
-            tr.children[2].appendChild(HTML.createElementParagraph("Follow discussion"));
+            var button = document.createElement("button");
+            button.textContent = "Follow discussion";
+            button.setAttribute("onclick", "IHM.followDiscussion(\""+status.id+"\")");
+            tr.children[2].appendChild(button);
         }
 
 
@@ -127,10 +134,9 @@
 
 
     /**
-     * Get the public timeline with instance API and fill the
-     * table.
+     * get the url of the instane of interest.
      */
-    function getTimeline(id) {
+    function instance_url() {
 
         var instance_url = input.value;
         if(!instance_url) {
@@ -139,11 +145,71 @@
         if(!instance_url) {
             instance_url = "https://mastodon.social";
         }
+        return instance_url;
+    }
+
+
+    /**
+     * Appends a status in the table discussion table with its history.
+     * @param status the status to show
+     */
+    function showDiscussionStatus(status) {
+
+        var tr = ex.cloneNode(true);
+        tr.children[0].textContent = status.created_at;
+
+        var avatar = document.createElement('img');
+        avatar.setAttribute('src',status.account.avatar);
+        avatar.setAttribute('width', 80);
+        tr.children[1].appendChild(avatar);
+        var br = document.createElement('br');
+        tr.children[1].appendChild(br);
+        var name = status.account.display_name;
+        if(name.trim().length === 0) {
+            name = status.account.acct;
+        }
+        var linkn = document.createElement('a');
+        linkn.setAttribute('href', status.account.url);
+        linkn.textContent=name;
+        tr.children[1].appendChild(linkn);
+
+        // an error can occur without this test
+        if(status.content.length > 0) {
+            HTML.addChildren(tr.children[2], HTML.createElementsFromHTML(status.content));
+        }
+
+        if(status.media_attachments.length > 0) {
+            var attach_st = status.media_attachments.length + " attachment";
+            if(status.media_attachments.length > 1) {
+                attach_st = attach_st + "s";
+            }
+
+            var p = HTML.createElementParagraph(attach_st);
+            p.setAttribute('class', "attachments_h");
+
+            tr.children[2].appendChild(p);
+            tr.children[2].appendChild(createAttachmentsTable(status.media_attachments, status.sensitive));
+        }
+
+        lastStatusId = status.id;
+        dbody.appendChild(tr);
+
+        if(status.in_reply_to_id != null) {
+            MASTO.getStatus(instance_url(), status.in_reply_to_id, showDiscussionStatus);
+        }
+    }
+
+
+    /**
+     * Get the public timeline with instance API and fill the
+     * table.
+     */
+    function getTimeline(id) {
 
         var rangeList = document.getElementById("range");
         var range = rangeList.options[rangeList.selectedIndex].value;
 
-        MASTO.getTimeline(instance_url, range, id, showStatus);
+        MASTO.getTimeline(instance_url(), range, id, showStatus);
     }
 
 
@@ -161,6 +227,20 @@
         getTimeline(lastStatusId);
     }
 
+
+    IHM.followDiscussion = function(statusId) {
+        discussion.style.display = "block";
+        timeline.style.display = "none";
+        HTML.removeChildren(dbody);
+        console.log("get status "+statusId);
+        MASTO.getStatus(instance_url(), statusId, showDiscussionStatus);        
+    }
+
+
+    IHM.goBackToTimeline = function() {
+        discussion.style.display = "none";
+        timeline.style.display = "block";
+    }
 
     root.IHM = IHM;
 }(this));

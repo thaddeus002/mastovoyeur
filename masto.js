@@ -46,5 +46,29 @@
         req.send(null);
     }
 
+
+    /**
+     * Get a status by its id.
+     * @param instance_url url of a Mastodon instance
+     * @param callback a function taking a status as parameter
+     */
+    MASTO.getStatus = function(instance_url, id, callback) {
+
+        const req = new XMLHttpRequest();
+        
+        req.open("GET", instance_url + "/api/v1/statuses/"+id);
+
+        req.onload = function() {
+
+            if (this.status != 200) {
+                throw new Error("HTTP Error "+this.status+" : "+this.responseText);
+            }
+
+            callback(JSON.parse(this.responseText));
+        };
+        req.send(null);
+    }
+
+
     root.MASTO = MASTO;
 }(this));

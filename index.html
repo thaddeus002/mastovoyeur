@@ -40,6 +40,21 @@
             <button onclick="IHM.loadMore()">Load more</button>
         </section>
 
+        <section id="discussion">
+            <table id="discussion_t">
+                <thead>
+                    <tr>
+                        <th>time</th>
+                        <th>account</th>
+                        <th>content</th>
+                    </tr>
+                </thead>
+                <tbody id="discussion_body">
+                </tbody>
+            </table>
+            <button onclick="IHM.goBackToTimeline()">Go back to timeline</button>
+        </section>
+
         <script src="html.js"></script>
         <script src="masto.js"></script>
         <script src="ihm.js"></script>
