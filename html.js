@@ -38,7 +38,7 @@
      */
     HTML.addChildren = function (parent, children) {
         for(var i=0; i<children.length; i++) {
-            parent.appendChild(children[i]);
+            parent.appendChild(children[i].cloneNode(true));
         }
     }
 
