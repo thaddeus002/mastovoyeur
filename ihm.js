@@ -191,7 +191,6 @@
             tr.children[2].appendChild(createAttachmentsTable(status.media_attachments, status.sensitive));
         }
 
-        lastStatusId = status.id;
         dbody.appendChild(tr);
 
         if(status.in_reply_to_id != null) {
