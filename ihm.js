@@ -79,6 +79,30 @@
 
 
     /**
+     * Shows a status metadata as time and user.
+     * @param cell a HTML element where show the infos
+     * @param status a Mastodon status
+     */
+    function showStatusMetadata(cell, status) {
+
+        var avatar = document.createElement('img');
+        avatar.setAttribute('src',status.account.avatar);
+        avatar.setAttribute('width', 80);
+        cell.appendChild(avatar);
+        var br = document.createElement('br');
+        cell.appendChild(br);
+        var name = status.account.display_name;
+        if(name.trim().length === 0) {
+            name = status.account.acct;
+        }
+        var linkn = document.createElement('a');
+        linkn.setAttribute('href', status.account.url);
+        linkn.textContent=name;
+        cell.appendChild(linkn);
+    }
+
+
+    /**
      * Appends a status in the table.
      * @param status the status to show
      */
@@ -87,20 +111,7 @@
         var tr = ex.cloneNode(true);
         tr.children[0].textContent = status.created_at;
 
-        var avatar = document.createElement('img');
-        avatar.setAttribute('src',status.account.avatar);
-        avatar.setAttribute('width', 80);
-        tr.children[1].appendChild(avatar);
-        var br = document.createElement('br');
-        tr.children[1].appendChild(br);
-        var name = status.account.display_name;
-        if(name.trim().length === 0) {
-            name = status.account.acct;
-        }
-        var linkn = document.createElement('a');
-        linkn.setAttribute('href', status.account.url);
-        linkn.textContent=name;
-        tr.children[1].appendChild(linkn);
+        showStatusMetadata(tr.children[1], status);
 
         // an error can occur without this test
         if(status.content.length > 0) {
@@ -113,7 +124,6 @@
             button.setAttribute("onclick", "IHM.followDiscussion(\""+status.id+"\")");
             tr.children[2].appendChild(button);
         }
-
 
         if(status.media_attachments.length > 0) {
             var attach_st = status.media_attachments.length + " attachment";
@@ -158,20 +168,7 @@
         var tr = ex.cloneNode(true);
         tr.children[0].textContent = status.created_at;
 
-        var avatar = document.createElement('img');
-        avatar.setAttribute('src',status.account.avatar);
-        avatar.setAttribute('width', 80);
-        tr.children[1].appendChild(avatar);
-        var br = document.createElement('br');
-        tr.children[1].appendChild(br);
-        var name = status.account.display_name;
-        if(name.trim().length === 0) {
-            name = status.account.acct;
-        }
-        var linkn = document.createElement('a');
-        linkn.setAttribute('href', status.account.url);
-        linkn.textContent=name;
-        tr.children[1].appendChild(linkn);
+        showStatusMetadata(tr.children[1], status);
 
         // an error can occur without this test
         if(status.content.length > 0) {
