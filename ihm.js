@@ -10,7 +10,6 @@
     var input = document.getElementById("instance");
 
     var body = document.getElementById("body");
-    var ex = document.getElementById("model");
 
     /** Id of the oldest loaded status */
     var lastStatusId = 0;
@@ -18,8 +17,6 @@
     var discussion = document.getElementById("discussion");
     var timeline = document.getElementById("statuses");
     var dbody = document.getElementById("discussion_body");
-
-    body.removeChild(ex);
 
 
     /**
@@ -103,12 +100,26 @@
 
 
     /**
+     * Create an html table line to show the status in.
+     * @return a tr element with 3 td
+     */
+    function createStatusLine() {
+        var tr = document.createElement('tr');
+        tr.appendChild(document.createElement('td'));
+        tr.appendChild(document.createElement('td'));
+        tr.appendChild(document.createElement('td'));
+        return tr;
+    }
+
+
+    /**
      * Appends a status in the table.
      * @param status the status to show
      */
     function showStatus(status) {
 
-        var tr = ex.cloneNode(true);
+        var tr = createStatusLine();
+
         tr.children[0].textContent = status.created_at;
 
         showStatusMetadata(tr.children[1], status);
@@ -165,7 +176,7 @@
      */
     function showDiscussionStatus(status) {
 
-        var tr = ex.cloneNode(true);
+        var tr = createStatusLine();
         tr.children[0].textContent = status.created_at;
 
         showStatusMetadata(tr.children[1], status);
