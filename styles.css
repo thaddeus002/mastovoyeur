@@ -29,6 +29,6 @@ table#statuses_t {
     width: 100%
 }
 
-#discussion {
+#statuses, #discussion {
     display: none;
 }

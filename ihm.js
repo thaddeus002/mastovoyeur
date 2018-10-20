@@ -226,6 +226,7 @@
      */
     IHM.refreshTimeline = function () {
         cleanStatuses();
+        IHM.goBackToTimeline();
         getTimeline(0);
     }
 
