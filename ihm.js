@@ -8,7 +8,6 @@
     let IHM = {};
 
     var input = document.getElementById("instance");
-
     var body = document.getElementById("body");
 
     /** Id of the oldest loaded status */
@@ -16,6 +15,7 @@
 
     var discussion = document.getElementById("discussion");
     var timeline = document.getElementById("statuses");
+    var header = document.getElementById("header");
     var dbody = document.getElementById("discussion_body");
 
 
@@ -238,6 +238,7 @@
 
     IHM.followDiscussion = function(statusId) {
         discussion.style.display = "block";
+        header.style.display = "none";
         timeline.style.display = "none";
         HTML.removeChildren(dbody);
         console.log("get status "+statusId);
@@ -247,6 +248,7 @@
 
     IHM.goBackToTimeline = function() {
         discussion.style.display = "none";
+        header.style.display = "block";
         timeline.style.display = "block";
     }
 

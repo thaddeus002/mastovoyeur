@@ -8,8 +8,10 @@
     </head>
     <body>
 
+        <h1>Mastovoyeur</h1>
+
         <section id="header">
-            <h1>
+            <h2>
                 Public
                 <select id="range" name="nom" size="1">
                     <option value="local">local</option>
@@ -18,7 +20,7 @@
                 timeline of
                 <input type="url" id="instance" placeholder="https://mastodon.social" />
                 <button onclick="IHM.refreshTimeline()">Load newest statuses</button>
-            </h1>
+            </h2>
         </section>
         
         <section id="statuses">
@@ -37,6 +39,7 @@
         </section>
 
         <section id="discussion">
+	    <h2>Following discussion</h2>
             <table id="discussion_t">
                 <thead>
                     <tr>
