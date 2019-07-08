@@ -160,13 +160,13 @@
     function instance_url() {
 
         var instance_url = input.value;
-        if(!instance_url) {
+        if (!instance_url) {
             instance_url = input.placeholder;
         }
-        if(!instance_url) {
-            instance_url = "https://mastodon.social";
+        if (!instance_url) {
+            instance_url = "mastodon.social";
         }
-        return instance_url;
+        return "https://" + instance_url;
     }
 
 
